@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Новая заявка</h2>
+<form method="post">
+  <label>Имя клиента <input name="client_name" required></label>
+  <label>Телефон <input name="client_phone" required></label>
+  <label>Услуга
+    <select name="service">
+      <option>Окна</option>
+      <option>Двери</option>
+      <option>Балконный блок</option>
+      <option>Другое</option>
+    </select>
+  </label>
+  <label>Комментарий <textarea name="comment" rows="3"></textarea></label>
+  <button type="submit">Сохранить</button>
+</form>
+{% endblock %}

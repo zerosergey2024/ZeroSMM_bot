@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Статистика заявок</h2>
+
+<form method="get">
+  <label>С даты <input type="date" name="from" required value="{{ request.args.get('from','') }}"></label>
+  <label>По дату <input type="date" name="to" required value="{{ request.args.get('to','') }}"></label>
+  <button type="submit">Показать</button>
+  {% if data %}<a href="{{ url_for('smm.leads_export', **request.args) }}">Экспорт CSV</a>{% endif %}
+</form>
+
+{% if data %}
+  <h3>Всего: {{ data.total }}</h3>
+  <h4>По дням</h4>
+  <ul>
+    {% for day, c in data.by_day %}<li>{{ day }} — {{ c }}</li>{% endfor %}
+  </ul>
+  <h4>По услугам</h4>
+  <ul>
+    {% for service, c in data.by_service %}<li>{{ service or '(не указано)' }} — {{ c }}</li>{% endfor %}
+  </ul>
+{% endif %}
+{% endblock %}

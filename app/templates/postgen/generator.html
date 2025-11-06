@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Post generator</h2>
+
+<form method="post">
+  <label>Тон
+    <input type="text" name="tone" value="{{ tone or 'нейтральный' }}" required>
+  </label>
+  <label>Тема
+    <input type="text" name="topic" value="{{ topic or '' }}" required>
+  </label>
+
+  <label>
+    <input type="checkbox" name="gen_image" {% if request.form.get('gen_image') %}checked{% endif %}>
+    Сгенерировать изображение
+  </label>
+
+  <label>
+    <input type="checkbox" name="autopost_vk" {% if request.form.get('autopost_vk') %}checked{% endif %}>
+    Автопубликация в VK (если заданы VK_API_KEY и VK_GROUP_ID)
+  </label>
+
+  <button type="submit">Сгенерировать</button>
+</form>
+
+{% if result_text %}
+  <hr>
+  <h3>Сгенерированный пост</h3>
+  <pre style="white-space:pre-wrap">{{ result_text }}</pre>
+{% endif %}
+
+{% if image_url %}
+  <h3>Сгенерированное изображение</h3>
+  <img src="{{ image_url }}" alt="generated" style="max-width:100%">
+  <p><a href="{{ image_url }}" download>Скачать изображение</a></p>
+{% endif %}
+
+{% if permalink %}
+  <h3>Публикация VK</h3>
+  {% if permalink.startswith('http') %}
+    <a href="{{ permalink }}" target="_blank" rel="noopener">Открыть пост</a>
+  {% else %}
+    <p>{{ permalink }}</p>
+  {% endif %}
+{% endif %}
+{% endblock %}

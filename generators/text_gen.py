@@ -1,35 +1,33 @@
-from openai import OpenAI
+# generators/text_gen.py
+from openai import OpenAI, api_key
+
 
 class PostGenerator:
     def __init__(self, openai_key, tone, topic):
-        self.client = OpenAI(api_key=openai_key)
+        self.client = OpenAI(api_key=api_key)
         self.tone = tone
         self.topic = topic
 
     def generate_post(self):
         response = self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4",
             messages=[
-                {"role": "system", "content": "Ты высококвалифицированный SMM специалист, который будет помогать в генерации текста для постов с заданной тебе тематикой и заданным тоном."},
-                {"role": "user", "content": f"Сгенерируй пост для соцсетей с темой {self.topic}, используя тон: {self.tone}"}
-            ]
+                {"role": "system", "content": f"Ты копирайтер. Напиши пост в {self.tone} тоне."},
+                {"role": "user", "content": f"Создай пост на тему: {self.topic}"}
+            ],
+            temperature=0.7,
         )
         return response.choices[0].message.content
-
-        #print(response.choices[0].message.content)
-
-#if __name__ == '__main__':
-        PostGenerator(openai_key="ключ", tone="Дружелюбный", topic="Конец света").generate_post()
-
 
     def generate_post_image_description(self):
         response = self.client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-4",
             messages=[
-                {"role": "system",
-                 "content": "Ты ассистент, который составит промпт для нейросети, которая будет генерировать изображения. Ты должен составлять промпт на заданную тематику."},
-                {"role": "user", "content": f"Сгенерируй изображение для соцсетей с темой {self.topic}"}
-            ]
+                {"role": "system", "content": "Ты создаешь описания изображений для генераторов."},
+                {"role": "user", "content": f"Опиши изображение для поста на тему: {self.topic}. Тон: {self.tone}"}
+            ],
+            temperature=0.7,
         )
         return response.choices[0].message.content
+
 

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>SMM-ассистент</h2>
+<form method="post">
+  <label>Тон <input name="tone" value="{{ tone or 'нейтральный' }}"></label>
+  <label>Тема <input name="topic" required value="{{ topic }}"></label>
+  <button type="submit">Сгенерировать</button>
+</form>
+
+{% if result_text %}
+  <h3>Сгенерированный пост</h3>
+  <pre style="white-space:pre-wrap">{{ result_text }}</pre>
+{% endif %}
+
+{% if image_path %}
+  <h3>Сгенерированное изображение</h3>
+  <img src="/{{ image_path }}" alt="image" style="max-width:100%">
+  <p><a href="/{{ image_path }}" download>Скачать</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Статистика заявок</h2>
+
+<form method="get" style="margin-bottom:1rem">
+  <label>С даты <input type="date" name="from" value="{{ date_from }}"></label>
+  <label>По дату <input type="date" name="to" value="{{ date_to }}"></label>
+  <button type="submit">Показать</button>
+</form>
+
+{% if summary %}
+  <section>
+    <h3>Сводка</h3>
+    <p><b>Всего заявок:</b> {{ summary.total }}</p>
+
+    <details open>
+      <summary><b>По дням</b></summary>
+      <ul>
+      {% for d,c in summary.by_day %}
+        <li>{{ d }} — {{ c }}</li>
+      {% endfor %}
+      </ul>
+    </details>
+
+    <details open>
+      <summary><b>По услугам</b></summary>
+      <ul>
+      {% for s,c in summary.by_service %}
+        <li>{{ s or '(не указано)' }} — {{ c }}</li>
+      {% endfor %}
+      </ul>
+    </details>
+  </section>
+{% endif %}
+
+<section style="margin-top:1rem">
+  <h3>Заявки{% if total_all and total_all>rows|length %} (показаны первые {{ rows|length }} из {{ total_all }}){% endif %}</h3>
+  {% if rows %}
+    <div style="overflow:auto">
+      <table>
+        <thead>
+          <tr>
+            {% for key, title in columns %}
+              <th>{{ title }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+            <tr>
+              {% for key, title in columns %}
+                <td>{{ r.get(key) or '—' }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p>Данных не найдено для выбранного периода.</p>
+  {% endif %}
+</section>
+{% endblock %}

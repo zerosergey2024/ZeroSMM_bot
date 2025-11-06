@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Солнечный луч — панель</h2>
+<p>Добавляй заявки, смотри статистику и генерируй контент для соцсетей.</p>
+<ul>
+    <li><a href="{{ url_for('smm.post_generator') }}">Post generator</a></li>
+    <li><a href="{{ url_for('smm.stats') }}">Stats</a></li>
+</ul>
+{% endblock %}
